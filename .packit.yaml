@@ -1,0 +1,17 @@
+---
+upstream_project_url: https://github.com/SSSD/sssd
+issue_repository: https://github.com/SSSD/sssd
+
+upstream_package_name: sssd
+specfile_path: sssd.spec
+
+actions:
+  post-upstream-clone:
+    - bash -c "sed -e 's/@PACKAGE_NAME@/sssd/' -e 's/@PACKAGE_VERSION@/0/' -e 's/@PRERELEASE_VERSION@//' contrib/sssd.spec.in > sssd.spec"
+
+jobs:
+  - job: copr_build
+    trigger: pull_request
+    targets:
+      - fedora-all
+      - epel-9
